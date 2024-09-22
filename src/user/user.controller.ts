@@ -1,6 +1,7 @@
 import { Controller, Post, Body, Get, Param, Put, Patch, Delete } from "@nestjs/common";
 import { CreateUserDTO } from "./dto/create-user.dto";
 import { UpdatePutUserDTO } from "./dto/update-put-user.dto";
+import { UpdatePatchUserDTO } from "./dto/update-patch-user.dto";
 
 const a = 'ola'
 @Controller('users')
@@ -31,7 +32,7 @@ export class UserController {
     }
 
     @Patch(':id')
-    async updateParcial(@Body() body, @Param() param) {
+    async updateParcial(@Body() body: UpdatePatchUserDTO, @Param() param) {
         return {
             method: 'patch',
             body,

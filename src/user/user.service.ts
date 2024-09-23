@@ -33,6 +33,8 @@ export class UserService {
 
     async update(id: number, { email, name, password, birthAt }: UpdatePutUserDTO) {
 
+        await this.exists(id);
+        
         return this.prisma.user.update({
             data: { email, name, password, birthAt: birthAt ? new Date(birthAt) : null },
             where: {
@@ -41,6 +43,9 @@ export class UserService {
         })
     }
     async updatePartial(id: number, data: UpdatePatchUserDTO) {
+        
+        await this.exists(id);
+
         return this.prisma.user.update({
             data,
             where: {
@@ -51,15 +56,19 @@ export class UserService {
 
     async delete(id:number){
 
-        if (!(await this.show(id))){
-            throw new NotFoundException(`O usuário ${id} não existe.`);
-        }
+        await this.exists(id);
         
         return this.prisma.user.delete({
             where: {
                 id
             }
         })
+    }
+    
+    async exists (id: number) {
+        if (!(await this.show(id))){
+            throw new NotFoundException(`O usuário ${id} não existe.`);
+        }        
     }
 
 }

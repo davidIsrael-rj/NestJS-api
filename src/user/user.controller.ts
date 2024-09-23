@@ -15,9 +15,9 @@ export class UserController {
         return this.userService.create(data);
     }
 
-    @Get('')
-    async read() {
-        return { users: [{ 'name': 'David' }] }
+    @Get()
+    async list() {
+        return this.userService.list()
     }
 
     @Get(':id')

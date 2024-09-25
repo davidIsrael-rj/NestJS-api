@@ -6,7 +6,7 @@ import { UserService } from "./user.service";
 import { LogInterceptor } from "src/interceptors/log.interceptor";
 
 const a = 'ola'
-@UseInterceptors(LogInterceptor)
+
 @Controller('users')
 export class UserController {
 

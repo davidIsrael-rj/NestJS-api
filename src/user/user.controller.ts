@@ -1,14 +1,16 @@
-import { Controller, Post, Body, Get, Param, Put, Patch, Delete, ParseIntPipe } from "@nestjs/common";
+import { Controller, Post, Body, Get, Param, Put, Patch, Delete, ParseIntPipe, UseInterceptors } from "@nestjs/common";
 import { CreateUserDTO } from "./dto/create-user.dto";
 import { UpdatePutUserDTO } from "./dto/update-put-user.dto";
 import { UpdatePatchUserDTO } from "./dto/update-patch-user.dto";
 import { UserService } from "./user.service";
+import { LogInterceptor } from "src/interceptors/log.interceptor";
 
 const a = 'ola'
+@UseInterceptors(LogInterceptor)
 @Controller('users')
 export class UserController {
 
-    constructor(private readonly userService : UserService){}
+    constructor(private readonly userService: UserService) { }
 
     @Post()
     async create(@Body() data: CreateUserDTO) {
@@ -36,7 +38,7 @@ export class UserController {
     }
 
     @Delete(':id')
-    async delete(@Param('id', ParseIntPipe) id: number){
+    async delete(@Param('id', ParseIntPipe) id: number) {
         return this.userService.delete(id)
     }
 

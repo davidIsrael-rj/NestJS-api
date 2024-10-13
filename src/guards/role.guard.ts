@@ -7,23 +7,24 @@ import { Role } from "src/enums/role.enum";
 export class RoleGuard implements CanActivate {
 
     constructor(
-        private readonly reflector : Reflector
+        private readonly reflector: Reflector
     ) { }
 
     async canActivate(context: ExecutionContext) {
 
-        const requeridRoles = this.reflector.getAllAndOverride<Role>(ROLE_KEY, [context.getHandler(), context.getClass()]);
+        const requeridRoles = this.reflector.getAllAndOverride<Role[]>(ROLE_KEY, [context.getHandler(), context.getClass()]);
 
-        if(!requeridRoles){
+        if (!requeridRoles) {
             return true;
         }
 
-        const {user} = context.switchToHttp().getRequest();
+        const { user } = context.switchToHttp().getRequest();
+
+        console.log(requeridRoles, user)
         
-        console.log({requeridRoles, user});
+        const rolesFilted = requeridRoles.filter((role) => role === user.role);
 
-      return true;
-
+        return rolesFilted.length > 0
 
     }
 }

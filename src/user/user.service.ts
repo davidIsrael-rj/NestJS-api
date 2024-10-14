@@ -15,8 +15,8 @@ export class UserService {
         password = password;
 
         const salt = await bcrypt.genSalt();
-        
-        console.log({salt})
+
+        console.log({ salt })
 
         password = await bcrypt.hash(password, salt)
 
@@ -48,6 +48,14 @@ export class UserService {
 
         await this.exists(id);
 
+        password = password;
+
+        const salt = await bcrypt.genSalt();
+
+        console.log({ salt })
+
+        password = await bcrypt.hash(password, salt)
+
         return this.prisma.user.update({
             data: { email, name, password, birthAt: birthAt ? new Date(birthAt) : null, role },
             where: {
@@ -59,6 +67,13 @@ export class UserService {
 
         await this.exists(id);
 
+        if (data.password) {
+            data.password = data.password;
+
+            const salt = await bcrypt.genSalt();
+
+            data.password = await bcrypt.hash(data.password, salt)
+        }
         return this.prisma.user.update({
             data,
             where: {
@@ -80,7 +95,7 @@ export class UserService {
 
     async exists(id: number) {
         if (!(await this.prisma.user.count({
-            where:{
+            where: {
                 id
             }
         }))) {

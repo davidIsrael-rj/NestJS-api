@@ -8,7 +8,6 @@ import { Role } from "src/enums/role.enum";
 import { Roles } from "src/decorators/roles.decorator";
 import { RoleGuard } from "src/guards/role.guard";
 import { AuthGuard } from "src/guards/auth.guard";
-import { ThrottlerGuard } from "@nestjs/throttler";
 
 const a = 'ola'
 
@@ -19,7 +18,7 @@ export class UserController {
 
     constructor(private readonly userService: UserService) { }
 
-    @UseGuards(ThrottlerGuard)
+    
     @Post()
     async create(@Body() data: CreateUserDTO) {
         return this.userService.create(data);

@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Post, UploadedFile, UploadedFiles, UseGuards, UseInterceptors } from "@nestjs/common";
+import { BadRequestException, Body, Controller, FileTypeValidator, MaxFileSizeValidator, ParseFilePipe, Post, UploadedFile, UploadedFiles, UseGuards, UseInterceptors } from "@nestjs/common";
 import { AuthLoginDTO } from "./dto/auth-login.dto";
 import { AuthRegisterDTO } from "./dto/auth-register.dto";
 import { AuthForgetDTO } from "./dto/auth-forget.dto";
@@ -50,7 +50,16 @@ export class AuthController {
     @UseInterceptors(FileInterceptor('file'))
     @UseGuards(AuthGuard)
     @Post('photo')
-    async uploadPhoto(@User() user, @UploadedFile() photo: Express.Multer.File) {
+    async uploadPhoto(
+        @User() user,
+        @UploadedFile(new ParseFilePipe({
+            validators:[
+                new FileTypeValidator({fileType:'image/jpeg'}),
+                new MaxFileSizeValidator({maxSize:1024 * 230}),
+                
+                // 234987
+            ]
+        })) photo: Express.Multer.File) {
 
         const path = join(__dirname, '..', '..', 'storage', 'photos', `photo-${user.id}.jpeg`)
 
@@ -60,7 +69,7 @@ export class AuthController {
             throw new BadRequestException(e)
         }
 
-        return { sucess: true, user: `${user.id}`, photo: `${photo.originalname}` }
+        return { sucess: true, user: `${user.id}`, photo: `${photo.originalname + photo.size}` }
     }
 
     @UseInterceptors(FilesInterceptor('files'))
@@ -82,11 +91,11 @@ export class AuthController {
     }]))
     @UseGuards(AuthGuard)
     @Post('files-fields')
-    async uploadFilesFields(@User() user, @UploadedFiles() files :{photo: Express.Multer.File, documents: Express.Multer.File[]}) {
+    async uploadFilesFields(@User() user, @UploadedFiles() files: { photo: Express.Multer.File, documents: Express.Multer.File[] }) {
 
-         const documents = files.documents
-         const photo = files.photo
+        const documents = files.documents
+        const photo = files.photo
 
-         return {documents}
+        return { documents }
     }
 }

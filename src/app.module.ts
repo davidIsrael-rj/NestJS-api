@@ -23,8 +23,8 @@ import { PugAdapter } from '@nestjs-modules/mailer/dist/adapters/pug.adapter';
         host: 'smtp.ethereal.email',
         port: 587,
         auth: {
-            user: 'marjorie.zieme@ethereal.email',
-            pass: 'g7zjtPE71PpDHF5DVB'
+            user: 'marielle.sipes90@ethereal.email',
+            pass: 'mcw9dYB41n4jHxmHMH'
         }
       },
       template: {

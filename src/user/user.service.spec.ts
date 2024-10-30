@@ -2,6 +2,7 @@ import { Test, TestingModule } from "@nestjs/testing";
 import { UserService } from "./user.service";
 import { getRepositoryToken } from "@nestjs/typeorm";
 import { UserEntity } from "./entity/user.entity";
+import { userRepositoryMock } from "../testing/user-repository.mock";
 
 describe('UserService', () => {
 
@@ -11,18 +12,7 @@ describe('UserService', () => {
         const module: TestingModule = await Test.createTestingModule({
             providers: [
                 UserService,
-                {
-                    provide: getRepositoryToken(UserEntity),
-                    useValue: {
-                        exist: jest.fn(),
-                        create: jest.fn(),
-                        save: jest.fn(),
-                        find: jest.fn(),
-                        findOneBy: jest.fn(),
-                        update: jest.fn(),
-                        delete: jest.fn(),
-                    }
-                }
+                userRepositoryMock
             ]
         }).compile();
 

@@ -9,7 +9,7 @@ export class UserEntity {
     @PrimaryGeneratedColumn({
         unsigned: true
     })
-    id: number;
+    id?: number;
 
     @Column({
         length:63
@@ -31,13 +31,13 @@ export class UserEntity {
         type: 'date',
         nullable: true
     })
-    birthAt: Date;
+    birthAt?: Date;
 
     @Column()@CreateDateColumn()
-    createdAt: string;
+    createdAt?: Date;
     
     @UpdateDateColumn()
-    updatedAt: string;
+    updatedAt?: Date;
     
     @Column({
         default: Role.User

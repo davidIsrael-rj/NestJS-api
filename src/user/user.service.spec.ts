@@ -1,8 +1,36 @@
-import { somar } from "../utils/somar"
+import { Test, TestingModule } from "@nestjs/testing";
+import { UserService } from "./user.service";
+import { getRepositoryToken } from "@nestjs/typeorm";
+import { UserEntity } from "./entity/user.entity";
 
-test('Este é o meu primeiro teste', () =>{
+describe('UserService', () => {
 
-    const resultado = somar(3,2);
-    
-    expect(resultado).toEqual(5);
-})
+    let userService: UserService;
+
+    beforeEach(async () => {
+        const module: TestingModule = await Test.createTestingModule({
+            providers: [
+                UserService,
+                {
+                    provide: getRepositoryToken(UserEntity),
+                    useValue: {
+                        exist: jest.fn(),
+                        create: jest.fn(),
+                        save: jest.fn(),
+                        find: jest.fn(),
+                        findOneBy: jest.fn(),
+                        update: jest.fn(),
+                        delete: jest.fn(),
+                    }
+                }
+            ]
+        }).compile();
+
+        userService = module.get<UserService>(UserService);
+
+    });
+
+    test('Validar a definição', () => {
+
+    })
+});

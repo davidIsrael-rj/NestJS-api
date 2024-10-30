@@ -1,10 +1,11 @@
+import * as dotenv from 'dotenv';
 import { Test, TestingModule } from "@nestjs/testing";
 import { UserService } from "./user.service";
 import { userRepositoryMock } from "../testing/user-repository.mock";
-import { CreateUserDTO } from "./dto/create-user.dto";
-import { Role } from "../enums/role.enum";
 import { userEntityList } from "../testing/user-entity-list.mock";
+import { createUserDTO } from "../testing/create-user-dto.mock";
 
+dotenv.config();
 
 describe('UserService', () => {
 
@@ -23,28 +24,21 @@ describe('UserService', () => {
     });
 
     test('Validar a definição', () => {
-
+        expect(userService).toBeDefined();
     });
 
-    describe('Create', ()=>{
+    describe('Create', () => {
 
-        test('method create', async()=>{
-            const data:CreateUserDTO ={
-                birthAt:'2000-01-01',
-                email:'joao@admin.com.br',
-                name:'João',
-                password: '123456',
-                role: Role.User
-            }
+        test('method create', async () => {
 
-            const result = await userService.create(data);
+            const result = await userService.create(createUserDTO);
 
-            expect(result).toEqual(userEntityList[0])
-        })
+            expect(result).toEqual(userEntityList[0]);
+        });
 
-    })
-    describe('Read', async ()=>{})
-    describe('Update', async ()=>{})
-    describe('Delete', async ()=>{})
+    });
+    describe('Read', ()=>{})
+    describe('Update', ()=>{})
+    describe('Delete', ()=>{})
 
 });

@@ -2,8 +2,8 @@ import { Role } from "../enums/role.enum";
 import { UserEntity } from "../user/entity/user.entity";
 
 export const userEntityList: UserEntity[] =[{
-    name:'João',
-    email:'joao@admin.com.br',
+    name:'david',
+    email:'david@admin.br.com',
     birthAt:new Date('2000-01-01'),
     id:1,
     password:'$2b$10$m5fGT7UbEq4S17PJSxa3eO.YbCQfBn4kgVeXmN/yJrJEDh5qYUcUe',

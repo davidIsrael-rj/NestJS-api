@@ -70,7 +70,11 @@ describe('UserService', () => {
             expect(result).toEqual(userEntityList[0]);
         });
 
-        
+        test('method updateParcial', async ()=>{
+            const result = await userService.updatePartial(1, updatePatchUserDTO);
+
+            expect(result).toEqual(userEntityList[0]);
+        });
     })
     describe('Delete', () => {
      })

@@ -89,10 +89,12 @@ export class UserService {
     async delete(id: number) {
 
         const dados = await this.show(id);
+        
         await this.exists(id);
 
-        await this.usersRepository.delete(id)
-        return dados;
+        await this.usersRepository.delete(id);
+
+        return true;
     }
 
     async exists(id: number) {

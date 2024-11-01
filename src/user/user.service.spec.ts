@@ -7,6 +7,8 @@ import { createUserDTO } from "../testing/create-user-dto.mock";
 import { Repository } from 'typeorm';
 import { UserEntity } from './entity/user.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
+import { updatePutUserDTO } from '../testing/update-put-user-dto.mock';
+import { updatePatchUserDTO } from '../testing/update-patch-user-dto.mock';
 
 dotenv.config();
 
@@ -60,7 +62,17 @@ describe('UserService', () => {
         })
     });
 
-    describe('Update', () => { })
-    describe('Delete', () => { })
+    describe('Update', () => { 
+
+        test('method update', async ()=>{
+            const result = await userService.update(1, updatePutUserDTO);
+
+            expect(result).toEqual(userEntityList[0]);
+        });
+
+        
+    })
+    describe('Delete', () => {
+     })
 
 });

@@ -62,7 +62,13 @@ describe('AuthService', () => {
             const result = await authService.login('david@admin.br.com', '123456');
           
             expect(result).toEqual({ accessToken });
-        })
+        });
+
+        test('forget method', async () => {
+            const result = await authService.forget('david@admin.br.com');
+          
+            expect(result).toEqual(true);
+        });
 
     });
 

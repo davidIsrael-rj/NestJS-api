@@ -37,8 +37,8 @@ describe('AuthService', () => {
         test('createToken method', async () => {
 
             const result = await authService.createToken(userEntityList[0]);
-           
-            expect(result).toEqual({accessToken});
+
+            expect(result).toEqual({ accessToken });
         });
 
         test('checkToken method', () => {
@@ -54,6 +54,16 @@ describe('AuthService', () => {
 
             expect(result).toEqual(true);
         });
-    })
+    });
+
+    describe('Autenticação', () => {
+
+        test('login method', async () => {
+            const result = await authService.login('david@admin.br.com', '123456');
+          
+            expect(result).toEqual({ accessToken });
+        })
+
+    });
 
 });

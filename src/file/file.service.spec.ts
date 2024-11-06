@@ -1,5 +1,6 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { FileService } from "./file.service";
+import { getPhoto } from "../testing/get-photo.mock";
 
 describe('FileService', () => {
 
@@ -17,4 +18,13 @@ describe('FileService', () => {
     test('Validar a definição', () => {
         expect(fileService).toBeDefined();
     });
+
+    describe('Teste do File Service', () =>{
+
+        test('upload method', async() =>{
+                const photo = await getPhoto();
+                const filename = 'photo-test.jpeg';
+                fileService.upload(photo, filename)
+            });
+        });
 });

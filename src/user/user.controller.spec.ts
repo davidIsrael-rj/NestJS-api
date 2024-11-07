@@ -41,4 +41,18 @@ describe('UserController', () => {
             expect(result).toEqual(userEntityList[0]);
         });
     });
+
+    describe('Read', () =>{
+        test('list method', async () => {
+            const result = await userController.list();
+
+            expect(result).toEqual(userEntityList);
+        });
+
+        test('show method', async () => {
+            const result = await userController.readOne(1);
+
+            expect(result).toEqual(userEntityList[0]);
+        });
+    });
 });

@@ -12,42 +12,44 @@ import { ParamId } from "../decorators/param-id.decorator";
 const a = 'ola'
 
 @Roles(Role.Admin)
-@UseGuards(AuthGuard ,RoleGuard)
+@UseGuards(AuthGuard, RoleGuard)
 @Controller('users')
 export class UserController {
 
     constructor(private readonly userService: UserService) { }
 
-    
+
     @Post()
     async create(@Body() data: CreateUserDTO) {
         return this.userService.create(data);
     }
-    
+
     @Get()
     async list() {
         return this.userService.list()
     }
-    
+
     @Get(':id')
     async readOne(@ParamId() id: number) {
         console.log({ id })
         return this.userService.show(id)
     }
-    
+
     @Put(':id')
     async update(@Body() data: UpdatePutUserDTO, @ParamId() id: number) {
         return this.userService.update(id, data)
     }
-    
+
     @Patch(':id')
     async updateParcial(@Body() data: UpdatePatchUserDTO, @ParamId() id: number) {
         return this.userService.updatePartial(id, data)
     }
-    
+
     @Delete(':id')
     async delete(@ParamId() id: number) {
-        return this.userService.delete(id)
+        return {
+            success: await this.userService.delete(id),
+        };
     }
 
 }

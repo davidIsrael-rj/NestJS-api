@@ -78,10 +78,10 @@ describe('UserService', () => {
     })
     describe('Delete', () => {
         
-        test('method delete', async ()=>{
+        test('delete method', async ()=>{
 
             const result = await userService.delete(1);
-
+            console.log(result)
             expect(result).toEqual(true)
         })
      })

@@ -5,6 +5,8 @@ import { AuthGuard } from "../guards/auth.guard";
 import { guardMOck } from "../testing/guard.mock";
 import { RoleGuard } from "../guards/role.guard";
 import { UserService } from "./user.service";
+import { createUserDTO } from "../testing/create-user-dto.mock";
+import { userEntityList } from "../testing/user-entity-list.mock";
 
 describe('UserController', () => {
 
@@ -32,4 +34,11 @@ describe('UserController', () => {
         expect(userService).toBeDefined();
     });
 
+    describe('Create', () =>{
+        test('create method', async () => {
+            const result = await userController.create(createUserDTO);
+
+            expect(result).toEqual(userEntityList[0]);
+        });
+    });
 });

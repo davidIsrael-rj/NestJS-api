@@ -49,7 +49,7 @@ export class AuthController {
     @UseGuards(AuthGuard)
     @Post('photo')
     async uploadPhoto(
-        @User() user,
+        @User() user: UserEntity,
         @UploadedFile(new ParseFilePipe({
             validators:[
                 new FileTypeValidator({fileType:'image/jpeg'}),
@@ -67,7 +67,7 @@ export class AuthController {
             throw new BadRequestException(e)
         }
 
-        return { sucess: true, user: `${user.id}`, photo: `${photo.originalname + photo.size}` }
+        return photo
     }
 
     @UseInterceptors(FilesInterceptor('files'))

@@ -6,6 +6,7 @@ import { authRegisterDTO } from '../src/testing/auth-register-dto.mock';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
+  let accessToken: string;
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -34,5 +35,19 @@ describe('AppController (e2e)', () => {
 
     expect(response.statusCode).toEqual(201);
     expect(typeof response.body.accessToken).toEqual('string');
+  });
+
+  it('Tentar fazer login com o novo usuário', async () => {
+    const response = await request(app.getHttpServer())
+    .post('/auth/login')
+    .send({
+      email: authRegisterDTO.email,
+      password:authRegisterDTO.password
+    });
+
+    expect(response.statusCode).toEqual(201);
+    expect(typeof response.body.accessToken).toEqual('string');
+
+    accessToken = response.body.accessToken;
   });
 });

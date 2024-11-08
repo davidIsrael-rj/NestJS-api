@@ -3,6 +3,7 @@ import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
 import { authRegisterDTO } from '../src/testing/auth-register-dto.mock';
+import { Role } from '../src/enums/role.enum';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
@@ -17,7 +18,7 @@ describe('AppController (e2e)', () => {
     await app.init();
   });
 
-  afterEach(() =>{
+  afterEach(() => {
     app.close();
   })
 
@@ -30,8 +31,8 @@ describe('AppController (e2e)', () => {
 
   it('Registrar um novo usuário', async () => {
     const response = await request(app.getHttpServer())
-    .post('/auth/register')
-    .send(authRegisterDTO);
+      .post('/auth/register')
+      .send(authRegisterDTO);
 
     expect(response.statusCode).toEqual(201);
     expect(typeof response.body.accessToken).toEqual('string');
@@ -39,15 +40,26 @@ describe('AppController (e2e)', () => {
 
   it('Tentar fazer login com o novo usuário', async () => {
     const response = await request(app.getHttpServer())
-    .post('/auth/login')
-    .send({
-      email: authRegisterDTO.email,
-      password:authRegisterDTO.password
-    });
+      .post('/auth/login')
+      .send({
+        email: authRegisterDTO.email,
+        password: authRegisterDTO.password
+      });
 
     expect(response.statusCode).toEqual(201);
     expect(typeof response.body.accessToken).toEqual('string');
 
     accessToken = response.body.accessToken;
+  });
+
+  it('Obter os dados do usuário logado', async () => {
+    const response = await request(app.getHttpServer())
+      .post('/auth/me')
+      .set('Authorization', `bearer ${accessToken}`)
+      .send();
+
+    expect(response.statusCode).toEqual(201);
+    expect(typeof response.body.id).toEqual('number');
+    expect(response.body.role).toEqual(Role.User);
   });
 });

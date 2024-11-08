@@ -6,6 +6,7 @@ import { authServiceMock } from "../testing/auth-service.mock";
 import { fileServiceMock } from "../testing/file-service.mock";
 import { authLoginDTO } from "../testing/auth-login.dto.mock";
 import { accessToken } from "../testing/access-token.mock";
+import { authRegisterDTO } from "../testing/auth-register-dto.mock";
 
 describe('AuthController', () => {
 
@@ -31,6 +32,12 @@ describe('AuthController', () => {
         test('login method', async () =>{
             const result = await authController.login(authLoginDTO);
             expect(result).toEqual({accessToken})
-        })
+        });
+
+        test('register method', async () =>{
+            const result = await authController.register(authRegisterDTO);
+            expect(result).toEqual({accessToken})
+        });
+
     });
 });

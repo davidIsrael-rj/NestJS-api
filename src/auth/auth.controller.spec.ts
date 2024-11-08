@@ -11,6 +11,7 @@ import { AuthForgetDTO } from "./dto/auth-forget.dto";
 import { authForgetDTO } from "../testing/auth-forget-dto";
 import { resetToken } from "../testing/reset-token.mock";
 import { authResetDTO } from "../testing/auth-reset-dto.mock";
+import { userEntityList } from "../testing/user-entity-list.mock";
 
 describe('AuthController', () => {
 
@@ -51,6 +52,13 @@ describe('AuthController', () => {
         test('reset method', async () =>{
             const result = await authController.reset(authResetDTO);
             expect(result).toEqual({accessToken});
+        });
+    });
+
+    describe('Rotas autenticadas', () =>{
+        test('me method', async () =>{
+            const result = await authController.me(userEntityList[0]);
+            expect(result).toEqual(userEntityList[0]);
         });
     });
 });

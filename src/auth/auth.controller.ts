@@ -8,6 +8,7 @@ import { FileFieldsInterceptor, FileInterceptor, FilesInterceptor } from "@nestj
 import { FileService } from "../file/file.service";
 import { AuthGuard } from "../guards/auth.guard";
 import { User } from "../decorators/user.decorato";
+import { UserEntity } from "../user/entity/user.entity";
 
 @Controller('auth')
 export class AuthController {
@@ -39,9 +40,9 @@ export class AuthController {
 
     @UseGuards(AuthGuard)
     @Post('me')
-    async me(@User() user, @Req() {tokenPayLoad}) {
+    async me(@User() user: UserEntity) {
 
-        return { user, tokenPayLoad }
+        return user 
     }
 
     @UseInterceptors(FileInterceptor('file'))

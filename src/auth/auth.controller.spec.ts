@@ -7,6 +7,8 @@ import { fileServiceMock } from "../testing/file-service.mock";
 import { authLoginDTO } from "../testing/auth-login.dto.mock";
 import { accessToken } from "../testing/access-token.mock";
 import { authRegisterDTO } from "../testing/auth-register-dto.mock";
+import { AuthForgetDTO } from "./dto/auth-forget.dto";
+import { authForgetDTO } from "../testing/auth-forget-dto";
 
 describe('AuthController', () => {
 
@@ -39,5 +41,9 @@ describe('AuthController', () => {
             expect(result).toEqual({accessToken})
         });
 
+        test('forget method', async () => {
+            const result = await authController.forget(authForgetDTO);
+            expect(result).toEqual({success:true});
+        });
     });
 });

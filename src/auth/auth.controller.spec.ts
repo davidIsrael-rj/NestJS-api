@@ -9,6 +9,8 @@ import { accessToken } from "../testing/access-token.mock";
 import { authRegisterDTO } from "../testing/auth-register-dto.mock";
 import { AuthForgetDTO } from "./dto/auth-forget.dto";
 import { authForgetDTO } from "../testing/auth-forget-dto";
+import { resetToken } from "../testing/reset-token.mock";
+import { authResetDTO } from "../testing/auth-reset-dto.mock";
 
 describe('AuthController', () => {
 
@@ -44,6 +46,11 @@ describe('AuthController', () => {
         test('forget method', async () => {
             const result = await authController.forget(authForgetDTO);
             expect(result).toEqual({success:true});
+        });
+
+        test('reset method', async () =>{
+            const result = await authController.reset(authResetDTO);
+            expect(result).toEqual({accessToken});
         });
     });
 });

@@ -9,6 +9,9 @@ import { UserEntity } from './entity/user.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { updatePutUserDTO } from '../testing/update-put-user-dto.mock';
 import { updatePatchUserDTO } from '../testing/update-patch-user-dto.mock';
+import { UserController } from './user.controller';
+import { AuthGuard } from '../guards/auth.guard';
+import { RoleGuard } from '../guards/role.guard';
 
 dotenv.config();
 
@@ -35,6 +38,17 @@ describe('UserService', () => {
         expect(userRepository).toBeDefined();
     });
 
+    describe('Teste da aplicação dos Guards neste controle', () => {
+        test('Se os guards estão aplicados', () => {
+            const guards = Reflect.getMetadata('__guards__', UserController);
+
+            expect(guards.length).toEqual(2);
+            expect(new guards[0]()).toBeInstanceOf(AuthGuard);
+            expect(new guards[1]()).toBeInstanceOf(RoleGuard);
+        });
+    });
+
+   
     describe('Create', () => {
 
         test('method create', async () => {

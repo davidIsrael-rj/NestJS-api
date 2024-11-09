@@ -84,4 +84,14 @@ describe('AppController (e2e)', () => {
     expect(typeof response.body.id).toEqual('number');
     expect(response.body.role).toEqual(Role.User);
   });
+
+  it('Tentar ver a lista de todos os usuário', async ()=>{
+    const response = await request(app.getHttpServer())
+    .get('/users')
+    .set('Authorization', `bearer ${accessToken}`)
+    .send();
+
+    expect(response.statusCode).toEqual(403);
+    expect(response.body.error).toEqual('Forbidden');
+  })
 });

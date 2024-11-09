@@ -1,8 +1,7 @@
-import { AuthRegisterDTO } from "../auth/dto/auth-register.dto";
-import { Role } from "../enums/role.enum";
+import { AuthRegisterDTO } from '../auth/dto/auth-register.dto';
 
 export const authRegisterDTO: AuthRegisterDTO = {
-    email:'david@admin.br.com',
-    name: 'david',
-    password: '123456'
-}
+  email: 'david@admin.br.com',
+  name: 'david',
+  password: '123456',
+};

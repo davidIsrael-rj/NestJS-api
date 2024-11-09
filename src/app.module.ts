@@ -14,12 +14,14 @@ import { UserEntity } from './user/entity/user.entity';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: process.env.ENV === 'test' ? '.env.test' : 'env'
+      envFilePath: process.env.ENV === 'test' ? '.env.test' : 'env',
     }),
-    ThrottlerModule.forRoot([{
-      ttl: 60000,
-      limit: 10,
-    }]),
+    ThrottlerModule.forRoot([
+      {
+        ttl: 60000,
+        limit: 10,
+      },
+    ]),
     forwardRef(() => UserModule),
     forwardRef(() => AuthModule),
     MailerModule.forRoot({
@@ -28,8 +30,8 @@ import { UserEntity } from './user/entity/user.entity';
         port: 587,
         auth: {
           user: 'marielle.sipes90@ethereal.email',
-          pass: 'mcw9dYB41n4jHxmHMH'
-        }
+          pass: 'mcw9dYB41n4jHxmHMH',
+        },
       },
       template: {
         dir: __dirname + '/templates',
@@ -47,15 +49,17 @@ import { UserEntity } from './user/entity/user.entity';
       password: process.env.DB_PASSWORD,
       database: process.env.DB_DATABASE,
       entities: [UserEntity],
-      synchronize: process.env.ENV === "development"
-    })
+      synchronize: process.env.ENV === 'development',
+    }),
   ],
   controllers: [AppController],
-  providers: [AppService, {
-    provide: APP_GUARD,
-    useClass: ThrottlerGuard
-
-  }],
-  exports: [AppService]
+  providers: [
+    AppService,
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
+  ],
+  exports: [AppService],
 })
-export class AppModule { }
+export class AppModule {}

@@ -4,11 +4,12 @@ import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
 import { authRegisterDTO } from '../src/testing/auth-register-dto.mock';
 import { Role } from '../src/enums/role.enum';
+import dataSource from '../typeorm/data-source';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
   let accessToken: string;
-
+  let userId: number;
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
@@ -63,10 +64,10 @@ describe('AppController (e2e)', () => {
     expect(response.body.role).toEqual(Role.User);
   });
 
-  it('Registrar um novo usuário como administrador', async () =>{
+  it('Registrar um novo usuário como administrador', async () => {
     const response = await request(app.getHttpServer())
-    .post('/auth/register')
-    .send({...authRegisterDTO,name:'joão', role: Role.Admin, email:'joao@admin.com.br'});
+      .post('/auth/register')
+      .send({ ...authRegisterDTO, name: 'joão', role: Role.Admin, email: 'joao@admin.com.br' });
 
     expect(response.statusCode).toEqual(201);
     expect(typeof response.body.accessToken).toEqual('string');
@@ -76,22 +77,43 @@ describe('AppController (e2e)', () => {
 
   it('Validar se a função do novo usuario ainda é User', async () => {
     const response = await request(app.getHttpServer())
-    .post('/auth/me')
-    .set('Authorization', `bearer ${accessToken}`)
-    .send();
+      .post('/auth/me')
+      .set('Authorization', `bearer ${accessToken}`)
+      .send();
 
     expect(response.statusCode).toEqual(201);
     expect(typeof response.body.id).toEqual('number');
     expect(response.body.role).toEqual(Role.User);
+
+    userId = response.body.id;
   });
 
-  it('Tentar ver a lista de todos os usuário', async ()=>{
+  it('Tentar ver a lista de todos os usuário', async () => {
     const response = await request(app.getHttpServer())
-    .get('/users')
-    .set('Authorization', `bearer ${accessToken}`)
-    .send();
+      .get('/users')
+      .set('Authorization', `bearer ${accessToken}`)
+      .send();
 
     expect(response.statusCode).toEqual(403);
     expect(response.body.error).toEqual('Forbidden');
-  })
+  });
+
+  it('Alterando manualmente o usuário para função admin', async () => {
+    const ds = await dataSource.initialize();
+
+    const queryRunner = ds.createQueryRunner();
+
+    await queryRunner.query(`
+      UPDATE users SET role = ${Role.Admin} WHERE id = ${userId}
+      `);
+
+    const rows = await queryRunner.query(`
+        SELECT * FROM users WHERE id = ${userId}
+        `);
+      dataSource.destroy();
+
+    expect(rows.length).toEqual(1);
+    expect(rows[0].role).toEqual(Role.Admin);
+  });
+
 });

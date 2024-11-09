@@ -62,4 +62,15 @@ describe('AppController (e2e)', () => {
     expect(typeof response.body.id).toEqual('number');
     expect(response.body.role).toEqual(Role.User);
   });
+
+  it('Registrar um novo usuário como administrador', async () =>{
+    const response = await request(app.getHttpServer())
+    .post('/auth/register')
+    .send({...authRegisterDTO,name:'joão', role: Role.Admin, email:'joao@admin.com.br'});
+
+    expect(response.statusCode).toEqual(201);
+    expect(typeof response.body.accessToken).toEqual('string');
+
+    accessToken = response.body.accessToken;
+  })
 });

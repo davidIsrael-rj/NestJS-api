@@ -72,5 +72,16 @@ describe('AppController (e2e)', () => {
     expect(typeof response.body.accessToken).toEqual('string');
 
     accessToken = response.body.accessToken;
-  })
+  });
+
+  it('Validar se a função do novo usuario ainda é User', async () => {
+    const response = await request(app.getHttpServer())
+    .post('/auth/me')
+    .set('Authorization', `bearer ${accessToken}`)
+    .send();
+
+    expect(response.statusCode).toEqual(201);
+    expect(typeof response.body.id).toEqual('number');
+    expect(response.body.role).toEqual(Role.User);
+  });
 });
